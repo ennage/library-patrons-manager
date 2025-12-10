@@ -1,0 +1,16 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "explorer.compactFolders": false,
+    "maven.view": "flat",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.cursorWidth": 2,
+    "editor.find.autoFindInSelection": "always",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "workbench.tree.indent": 18,
+    "workbench.tree.renderIndentGuides": "onHover",
+    "workbench.editor.showTabIndex": false,
+    "java.configuration.runtimes": [
+        
+    ]
+}
