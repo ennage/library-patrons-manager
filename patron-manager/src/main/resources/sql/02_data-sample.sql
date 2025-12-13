@@ -83,15 +83,15 @@ INSERT INTO books (BookID, Title, Author, ISBN, PublicationYear, CategoryID) VAL
 -- 2. Insert Sample Data into PATRONS (Parent Table)
 -- PatronID (varchar, Primary Key), FirstName, LastName, Address, Email (Unique), PhoneNumber (int, Unique)
 -- ----------------------------------------------------------------------
-INSERT INTO patrons (PatronID, FirstName, LastName, Address, Email, PhoneNumber) VALUES
-('PT-0001', 'Shinichi', 'Kudo', 'Beika Town, Tokyo', 'shinichi.kudo@dcmanga.jp', 9881112222),
-('PT-0002', 'Heiji', 'Hattori', 'Osaka Prefecture', 'heiji.hattori@dcmanga.jp', 9883334444),
-('PT-0003', 'Saguru', 'Hakuba', 'London/Tokyo Mansion', 'saguru.hakuba@dcmanga.jp', 9885556666),
-('PT-0004', 'Kaito', 'Kuroba', 'Ekoda Town, Tokyo', 'kaito.kuroba@dcmanga.jp', 9887778888),
-('PT-0005', 'Ran', 'Mouri', 'Beika Town, Tokyo', 'ran.mouri@dcmanga.jp', 9889990000),
-('PT-0006', 'Kazuha', 'Toyama', 'Osaka Prefecture', 'kazuha.toyama@dcmanga.jp', 9880001111),
-('PT-0007', 'Aoko', 'Nakamori', 'Ekoda Town, Tokyo', 'aoko.nakamori@dcmanga.jp', 9882223333),
-('PT-0008', 'Shiho', 'Miyano', 'Beika Town, Tokyo', 'shiho.miyano@dcmanga.jp', 9884445555);
+INSERT INTO patrons (PatronID, FirstName, LastName, PhoneNumber, Email, Address) VALUES
+('PT-0001', 'Shinichi', 'Kudo', '9881112222', 'shinichi.kudo@dcmanga.jp', 'Beika Town, Tokyo'),
+('PT-0002', 'Heiji', 'Hattori', '9883334444', 'heiji.hattori@dcmanga.jp', 'Osaka Prefecture'),
+('PT-0003', 'Saguru', 'Hakuba', '9885556666', 'saguru.hakuba@dcmanga.jp', 'London/Tokyo Mansion'),
+('PT-0004', 'Kaito', 'Kuroba', '9887778888', 'kaito.kuroba@dcmanga.jp', 'Ekoda Town, Tokyo'),
+('PT-0005', 'Ran', 'Mouri', '9889990000', 'ran.mouri@dcmanga.jp', 'Beika Town, Tokyo'),
+('PT-0006', 'Kazuha', 'Toyama', '9880001111', 'kazuha.toyama@dcmanga.jp', 'Osaka Prefecture'),
+('PT-0007', 'Aoko', 'Nakamori', '9882223333', 'aoko.nakamori@dcmanga.jp', 'Ekoda Town, Tokyo'),
+('PT-0008', 'Shiho', 'Miyano', '9884445555', 'shiho.miyano@dcmanga.jp', 'Beika Town, Tokyo');
 
 
 
