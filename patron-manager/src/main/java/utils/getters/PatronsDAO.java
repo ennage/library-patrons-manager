@@ -1,4 +1,4 @@
-package utils.accessors;
+package utils.getters;
 
 public class PatronsDAO {
     

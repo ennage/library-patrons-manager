@@ -1,4 +1,4 @@
-package com.batstateu.library;
+package application;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

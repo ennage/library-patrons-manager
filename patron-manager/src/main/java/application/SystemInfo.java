@@ -1,4 +1,4 @@
-package com.batstateu.library;
+package application;
 
 public class SystemInfo {
 
