@@ -34,4 +34,12 @@ public class MainController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    /**
+     * Handler for the global refresh button (from MainApplication.fxml).
+     */
+    @FXML
+    private void handleGlobalRefresh() {
+        GlobalEventManager.getInstance().triggerRefresh();
+    }
 }

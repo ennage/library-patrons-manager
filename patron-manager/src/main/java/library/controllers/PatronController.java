@@ -3,6 +3,7 @@ package library.controllers;
 import java.sql.SQLException;
 import java.util.List;
 
+import configuration.GlobalEventManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -65,8 +66,12 @@ public class PatronController {
             });
 
         // Set initial state
-        deletePatronButton.setDisable(true); 
+        deletePatronButton.setDisable(true);
 
+        // --- Global Refresh Listener ---
+        GlobalEventManager.getInstance().getRefreshSignal().addListener((obs, oldVal, newVal) -> {
+            loadPatrons();
+        });
         loadPatrons();
     }
     

@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
+import configuration.GlobalEventManager;
+
 public class TransactionController {
 
     // -------------------------------------------
@@ -60,6 +62,13 @@ public class TransactionController {
                 // Enable return button only if a loan is selected
                 returnButton.setDisable(newValue == null);
             });
+        // --- Global Refresh Listener ---
+        GlobalEventManager.getInstance().getRefreshSignal().addListener((obs, oldVal, newVal) -> {
+            // Reloads the list of currently loaned books
+            loadOutstandingLoans(); 
+            // Reloads patrons for the ComboBox
+            loadPatronsAndBooks();                     
+        });
     }
 
     /**

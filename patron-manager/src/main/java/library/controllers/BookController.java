@@ -13,6 +13,8 @@ import library.utilities.CategoryDAO;
 import java.sql.SQLException;
 import java.util.List;
 
+import configuration.GlobalEventManager;
+
 public class BookController {
 
     // -------------------------------------------
@@ -65,9 +67,13 @@ public class BookController {
 
         // Set initial state
         deleteBookButton.setDisable(true); 
-
-        loadCategories();
+        // --- Global Refresh Listener ---
+        GlobalEventManager.getInstance().getRefreshSignal().addListener((obs, oldVal, newVal) -> {
+            loadBooks(); 
+            loadCategories();
+        });
         loadBooks();
+        loadCategories();
     }
     
     private void loadCategories() {

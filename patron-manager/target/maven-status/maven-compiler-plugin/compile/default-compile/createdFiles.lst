@@ -9,6 +9,7 @@ application\SystemInfo.class
 configuration\DBConnector.class
 configuration\MainController.class
 library\models\Patron.class
+configuration\GlobalEventManager.class
 library\utilities\PatronDAO.class
 library\utilities\BookDAO.class
 library\utilities\TransactionDAO.class
