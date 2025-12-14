@@ -7,7 +7,6 @@ library\utilities\CategoryDAO.class
 library\models\Book.class
 application\SystemInfo.class
 configuration\DBConnector.class
-tools\TesterForDAO.class
 configuration\MainController.class
 library\models\Patron.class
 library\utilities\PatronDAO.class

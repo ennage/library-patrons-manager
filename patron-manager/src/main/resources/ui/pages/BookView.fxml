@@ -12,7 +12,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" 
+<BorderPane style="-fx-font-family: Consolas;"
+            xmlns="http://javafx.com/javafx/21" 
             xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="library.controllers.BookController">
 
@@ -23,11 +24,12 @@
     <center>
         <TableView fx:id="bookTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="bookIDColumn" text="Book ID" />
-                <TableColumn fx:id="titleColumn" prefWidth="200.0" text="Title" />
+                <TableColumn fx:id="bookIDColumn" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Book ID" />
+                <TableColumn fx:id="titleColumn" prefWidth="250.0" text="Title" />
                 <TableColumn fx:id="authorColumn" prefWidth="150.0" text="Author" />
+                <TableColumn fx:id="isbnColumn" prefWidth="100.0" text="ISBN" />
                 <TableColumn fx:id="publicationYearColumn" prefWidth="100.0" text="Year" />
-                <TableColumn fx:id="categoryNameColumn" prefWidth="120.0" text="Category" />
+                <TableColumn fx:id="categoryNameColumn" prefWidth="110.0" text="Category" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -36,38 +38,59 @@
     </center>
     
     <left>
-        <VBox alignment="TOP_LEFT" maxWidth="300" spacing="10.0" BorderPane.alignment="CENTER">
+        <VBox alignment="TOP_LEFT" prefWidth="300.0" spacing="10.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets right="10" />
             </BorderPane.margin>
             
-            <Label style="-fx-font-weight: bold;" text="Book Details" />
-            <Separator />
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="303.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="BOOKS" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+            
+            <Separator prefWidth="200.0" />
+            
+            <Label style="-fx-font-weight: bold;" text="Details:" />
 
-            <Label text="Title:" />
-            <TextField fx:id="titleField" promptText="Enter book title" />
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Title:" />
+                    <TextField fx:id="titleField" prefHeight="30.0" prefWidth="210.0" promptText="Enter Book Title" HBox.hgrow="ALWAYS" />
+                </children>
+            </HBox>
 
-            <Label text="Author:" />
-            <TextField fx:id="authorField" promptText="Enter author name" />
-            
-            <Label text="ISBN:" />
-            <TextField fx:id="isbnField" promptText="Enter ISBN" />
-            
-            <Label text="Publication Year:" />
-            <TextField fx:id="publicationYearField" promptText="Enter publication year" />
-            
-            <Label text="Category:" />
-            <ComboBox fx:id="categoryComboBox" maxWidth="Infinity" promptText="Select Category" />
-            
-            <Separator />
-            
-            <HBox alignment="CENTER" spacing="10.0">
-                <Button maxWidth="Infinity" onAction="#handleSaveBook" text="Save / Update" HBox.hgrow="ALWAYS" />
-                
-                <Button maxWidth="Infinity" onAction="#handleClearFields" text="Clear Fields" HBox.hgrow="ALWAYS" />
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Author:" />
+                    <TextField fx:id="authorField" prefHeight="30.0" prefWidth="210.0" promptText="Enter Author Name" HBox.hgrow="ALWAYS" />
+                </children>
             </HBox>
             
-            <Button maxWidth="Infinity" onAction="#handleDeleteBook" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Book" HBox.hgrow="ALWAYS" />
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="90.0" text="ISBN:" />
+                    <TextField fx:id="isbnField" prefHeight="30.0" prefWidth="210.0" promptText="Enter ISBN" HBox.hgrow="ALWAYS" />
+                </children>
+            </HBox>
+            
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Year:" />
+                    <TextField fx:id="publicationYearField" prefHeight="30.0" prefWidth="210.0" promptText="Enter Year of Publication" HBox.hgrow="ALWAYS" />
+                </children>
+            </HBox>
+            
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Category:" />
+                    <ComboBox fx:id="categoryComboBox" prefHeight="30.0" prefWidth="210.0" promptText="Select Category" HBox.hgrow="ALWAYS" />
+                </children>
+            </HBox>
+            
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <Button fx:id="saveBookButton" onAction="#handleSaveBook" prefWidth="150.0" text="Save / Update" HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleClearFields" prefWidth="150.0" text="Clear Selection" HBox.hgrow="ALWAYS" />
+            </HBox>
+            
+            <Separator prefHeight="20.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+            <Button fx:id="deleteBookButton" maxWidth="Infinity" onAction="#handleDeleteBook" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Book" />
             
         </VBox>
     </left>

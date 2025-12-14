@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,59 +11,29 @@ import configuration.DBConnector;
 import library.models.Category;
 
 public class CategoryDAO {
-    // -------------------------------------------------
-    // --- ID GENERATION LOGIC (Special Requirement) ---
-    // -------------------------------------------------
-    private String generateNextId(String categoryName, Connection conn) throws SQLException {
-        // 1. Create 4-letter prefix (e.g., FICT for Fiction)
-        String prefix = categoryName.toUpperCase().substring(0, Math.min(categoryName.length(), 4));
-        // 2. Query to find the highest sequence number for this prefix
-        String sql = "SELECT CategoryID FROM categories WHERE CategoryID LIKE ? ORDER BY CategoryID DESC LIMIT 1";
-        
-        int nextSequence = 1;
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            // Use the prefix + wildcard (%) to search, e.g., "FICT%"
-            pstmt.setString(1, prefix + "%");
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    String lastId = rs.getString("CategoryID");
-                    // Extract the number part (3 digits)
-                    String numberPart = lastId.substring(prefix.length());
-                    // Convert to integer and increment
-                    nextSequence = Integer.parseInt(numberPart) + 1;
-                }
-            }
-        }
-        
-        // 3. Format the new sequence number with zero-padding (001, 010, 100)
-        DecimalFormat df = new DecimalFormat("000"); // 3 sequential digits
-        String newSequence = df.format(nextSequence); 
-
-        // 4. Return the new full ID
-        return prefix + newSequence; // e.g., "FICT006"
-    }
-
     // -------------------------------------
     // --- CRUD OPERATION IMPLEMENTATION ---
     // -------------------------------------
 
     // ---------- CREATE ----------
-    public void createCategory(String categoryName) throws SQLException {
+    public Category createCategory(Category category) throws SQLException { // Changed signature to take Category object
         Connection link = null;
         PreparedStatement state = null;
+        
+        // SQL statement remains the same, but values come from the Category object
+        String sql = "INSERT INTO categories (CategoryID, CategoryName) VALUES (?, ?)";
+        
         try {
             link = DBConnector.getConnection();
-            
-            // 1. Generate the unique, sequential ID before inserting
-            String newId = generateNextId(categoryName, link);
-            
-            String sql = "INSERT INTO categories (CategoryID, CategoryName) VALUES (?, ?)";
             state = link.prepareStatement(sql);
             
-            state.setString(1, newId);
-            state.setString(2, categoryName);
+            // 1. Use the ID provided by the Category object (user input)
+            state.setString(1, category.getCategoryID()); 
+            state.setString(2, category.getCategoryName());
             state.executeUpdate();
+            
+            // Return the object that was saved
+            return category;
             
         } catch (SQLException e) {
             System.err.println("Error creating category: " + e.getMessage());

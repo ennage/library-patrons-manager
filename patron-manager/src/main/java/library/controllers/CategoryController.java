@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory; // Assuming your DAO is in library.utilities
+import javafx.scene.control.cell.PropertyValueFactory;
 import library.models.Category;
 import library.utilities.CategoryDAO;
 
@@ -23,10 +23,10 @@ public class CategoryController {
     @FXML private TableView<Category> categoryTable;
     @FXML private TableColumn<Category, String> categoryIDColumn;
     @FXML private TableColumn<Category, String> nameColumn;
-
+    @FXML private TextField categoryIDField;
     @FXML private TextField nameField;
-    @FXML private Button saveButton;
-    @FXML private Button deleteButton;
+    @FXML private Button saveCategoryButton;
+    @FXML private Button deleteCategoryButton;
 
     // -------------------------------------------
     // 2. DATA LAYER INSTANCE AND STATE
@@ -47,7 +47,15 @@ public class CategoryController {
         
         // --- Add Listener for Table Selection ---
         categoryTable.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldValue, newValue) -> showCategoryDetails(newValue));
+            (observable, oldValue, newValue) -> {
+                showCategoryDetails(newValue);
+                
+                // FIX: Disable the Delete button if no row is selected
+                deleteCategoryButton.setDisable(newValue == null); 
+            });
+
+        // FIX: Set initial state—Delete button must be disabled when the app first starts.
+        deleteCategoryButton.setDisable(true); 
 
         // --- Load Data on startup ---
         loadCategories();
@@ -73,13 +81,19 @@ public class CategoryController {
     private void showCategoryDetails(Category category) {
         if (category != null) {
             selectedCategory = category;
+            categoryIDField.setText(category.getCategoryID());
             nameField.setText(category.getCategoryName());
+            // Disable ID field during UPDATE mode to prevent key changes
+            categoryIDField.setDisable(true); 
+
         } else {
             handleClearFields();
             selectedCategory = null;
+            // Enable ID field during CREATE mode
+            categoryIDField.setDisable(false); 
         }
         // Update the button text based on selection
-        saveButton.setText(selectedCategory != null ? "Update Category" : "Save New Category");
+        saveCategoryButton.setText(selectedCategory != null ? "Update Category" : "Save New Category");
     }
 
     // -------------------------------------------
@@ -91,40 +105,45 @@ public class CategoryController {
      */
     @FXML
     private void handleSaveCategory() {
+        String inputID = categoryIDField.getText().trim(); // New line to get ID
         String inputName = nameField.getText().trim();
         
-        if (inputName.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Category Name cannot be empty.");
+        if (inputName.isEmpty() || (selectedCategory == null && inputID.isEmpty())) {
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "Category Name and ID cannot be empty.");
             return;
         }
 
         try {
             if (selectedCategory != null) {
                 // --- A. UPDATE EXISTING CATEGORY ---
+                // ID is disabled, only Name is updated
                 selectedCategory.setCategoryName(inputName);
+                
                 categoryDAO.updateCategory(selectedCategory);
-                categoryTable.refresh(); // Refresh the row in the table
+                categoryTable.refresh();
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Category updated successfully.");
 
             } else {
                 // --- B. CREATE NEW CATEGORY ---
-                // The DAO handles ID generation and insertion
-                categoryDAO.createCategory(inputName); 
+                // This now relies on the user-provided ID
+                Category newCategory = new Category(inputID, inputName); // Assuming your model allows this constructor
+
+                // NOTE: Your DAO must now handle the user-provided ID and check for duplicates.
+                Category savedCategory = categoryDAO.createCategory(newCategory); // Assuming a new DAO method
                 
-                // Re-load the data to refresh the entire table, ensuring the new category 
-                // (with its new, sequentially generated ID) appears in the correct order.
-                loadCategories(); 
+                // Add the new category to the UI list
+                categoryList.add(savedCategory); 
                 showAlert(Alert.AlertType.INFORMATION, "Success", "New Category created successfully.");
             }
             handleClearFields(); 
 
         } catch (SQLException e) {
-            // Check for Duplicate Entry error (if CategoryName is unique)
+            String errorMsg = "Failed to save category. Check logs.";
+            // Check for Duplicate Entry error (ID or Name)
             if (e.getSQLState().startsWith("23")) {
-                showAlert(Alert.AlertType.ERROR, "Database Error", "Category Name must be unique.");
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save category. Check logs.");
+                errorMsg = "Database Error: The Category ID or Name is already in use.";
             }
+            showAlert(Alert.AlertType.ERROR, "Database Error", errorMsg);
             e.printStackTrace();
         }
     }
@@ -164,10 +183,13 @@ public class CategoryController {
      */
     @FXML
     private void handleClearFields() {
+        categoryIDField.clear();
         nameField.clear();
         categoryTable.getSelectionModel().clearSelection();
         selectedCategory = null; 
-        saveButton.setText("Save New Category"); // Reset button text
+        
+        categoryIDField.setDisable(false); 
+        saveCategoryButton.setText("Save New Category");
     }
 
     /**

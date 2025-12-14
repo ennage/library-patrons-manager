@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,7 +37,8 @@ public class PatronController {
     @FXML private TextField emailField;
     @FXML private TextField phoneField;
     @FXML private TextField addressField;
-
+    @FXML private Button savePatronButton;
+    @FXML private Button deletePatronButton;
 
     // -------------------------------------------
     // 2. DATA LAYER INSTANCE (The MODEL)
@@ -59,12 +61,15 @@ public class PatronController {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        // --- NEW SELECTION LISTENER ---
-        patronTable.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldValue, newValue) -> showPatronDetails(newValue));
-        // --- END NEW LISTENER ---
-
-        // --- Load Data ---
+        // --- Add Selection Listener for Details AND Button State ---
+    patronTable.getSelectionModel().selectedItemProperty().addListener(
+        (observable, oldValue, newValue) -> {
+            showPatronDetails(newValue);
+            
+            // FIX: Disable button if no row is selected
+            deletePatronButton.setDisable(newValue == null); 
+        });
+        deletePatronButton.setDisable(true);
         loadPatrons();
     }
 
@@ -80,6 +85,7 @@ public class PatronController {
             handleClearFields(); // Clear fields if nothing is selected (or selection is cleared)
             selectedPatron = null;
         }
+        savePatronButton.setText(selectedPatron != null ? "Update Patron" : "Save New Patron");
     }
     
     /**

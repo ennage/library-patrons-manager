@@ -23,14 +23,17 @@ public class BookController {
     @FXML private TableColumn<Book, String> bookIDColumn;
     @FXML private TableColumn<Book, String> titleColumn;
     @FXML private TableColumn<Book, String> authorColumn;
-    @FXML private TableColumn<Book, Integer> publicationYearColumn; // NEW: Added publication year column
+    @FXML private TableColumn<Book, String> isbnColumn;
+    @FXML private TableColumn<Book, Integer> publicationYearColumn;
     @FXML private TableColumn<Book, String> categoryNameColumn;
     
     @FXML private TextField titleField;
     @FXML private TextField authorField;
     @FXML private TextField isbnField;
-    @FXML private TextField publicationYearField; // NEW: Added publication year input field
-    @FXML private ComboBox<Category> categoryComboBox; 
+    @FXML private TextField publicationYearField;
+    @FXML private ComboBox<Category> categoryComboBox;
+    @FXML private Button saveBookButton;
+    @FXML private Button deleteBookButton;
     // Assuming you have Save, Update, and Delete buttons linked via onAction attributes
 
     // -------------------------------------------
@@ -54,12 +57,19 @@ public class BookController {
         publicationYearColumn.setCellValueFactory(new PropertyValueFactory<>("publicationYear")); // NEW
         categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName")); // Requires getCategoryName() in Book model
 
-        // --- Add Listener for Table Selection ---
+        // --- Add Selection Listener for Details AND Button State ---
         bookTable.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldValue, newValue) -> showBookDetails(newValue));
+            (observable, oldValue, newValue) -> {
+                showBookDetails(newValue);
+                
+                // FIX: Disable button if no row is selected
+                deleteBookButton.setDisable(newValue == null);
+            });
 
-        // --- Load Data on startup ---
-        loadCategories(); // Must load categories first for the ComboBox
+        // FIX: Set initial state (disable the button when the app starts)
+        deleteBookButton.setDisable(true); 
+
+        loadCategories();
         loadBooks();
     }
     
@@ -128,6 +138,7 @@ public class BookController {
             handleClearFields();
             selectedBook = null;
         }
+        saveBookButton.setText(selectedBook != null ? "Update Book" : "Save New Book");
     }
 
     // -------------------------------------------
