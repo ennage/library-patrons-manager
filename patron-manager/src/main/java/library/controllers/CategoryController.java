@@ -42,7 +42,7 @@ public class CategoryController {
     public void initialize() {
         // --- Configure Table Columns ---
         // Maps the column to the fields in the Category model (categoryId and categoryName)
-        categoryIDColumn.setCellValueFactory(new PropertyValueFactory<>("categoryId"));
+        categoryIDColumn.setCellValueFactory(new PropertyValueFactory<>("categoryID"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
         
         // --- Add Listener for Table Selection ---

@@ -47,8 +47,8 @@ public class TransactionController {
         transactionIDColumn.setCellValueFactory(new PropertyValueFactory<>("transactionID"));
         patronNameColumn.setCellValueFactory(new PropertyValueFactory<>("patronName")); // Requires getPatronName() in Transaction model
         bookTitleColumn.setCellValueFactory(new PropertyValueFactory<>("bookTitle")); // Requires getBookTitle() in Transaction model
-        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("borrowDate"));
-        dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate")); 
+        borrowDateColumn.setCellValueFactory(new PropertyValueFactory<>("dateBorrowed"));
+        dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         
         // --- Load Initial Data ---
         loadPatronsAndBooks();

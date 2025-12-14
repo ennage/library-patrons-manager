@@ -15,7 +15,7 @@ public class PatronDAO {
     private static final String PATRON_PREFIX = "PT-";
 
     // --- ID GENERATION LOGIC ---
-    public String generateNextPatronId(Connection conn) throws SQLException {
+    public String generateNextPatroId(@SuppressWarnings("exports") Connection conn) throws SQLException {
         // SQL: Find the highest PatronID that starts with the defined prefix
         // ORDER BY DESC and LIMIT 1 ensures we get the latest one quickly.
         String sql = "SELECT PatronID FROM patrons WHERE PatronID LIKE ? ORDER BY PatronID DESC LIMIT 1";
