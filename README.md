@@ -1,7 +1,3 @@
-This is a complete and excellent set of documentation. I have combined the existing information with the required "DOCUMENTATION" sections (User manual, Reflection, and Screenshots) to create a single, professional **`README.md`** file.
-
------
-
 # 📚 Library Management System (Patron-Manager)
 
 This is a desktop application developed using **JavaFX** and **Maven** for the management of library assets (Books, Categories) and patron records, including the tracking of book loans and returns (Transactions).
