@@ -4,22 +4,59 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import handlers.DBConnector;
 import library.models.Patron;
+import tools.DBConnector;
 
 public class PatronDAO {
+    private static final String PATRON_PREFIX = "PT-";
+
+    // --- ID GENERATION LOGIC ---
+    public String generateNextPatronId(Connection conn) throws SQLException {
+        // SQL: Find the highest PatronID that starts with the defined prefix
+        // ORDER BY DESC and LIMIT 1 ensures we get the latest one quickly.
+        String sql = "SELECT PatronID FROM patrons WHERE PatronID LIKE ? ORDER BY PatronID DESC LIMIT 1";
+        
+        int nextSequence = 1;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            // Use the prefix + wildcard (%) to search, e.g., "PT-%"
+            pstmt.setString(1, PATRON_PREFIX + "%");
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String lastId = rs.getString("PatronID"); // e.g., "PT-0008"
+                    
+                    // Extract the number part (4 digits)
+                    String numberPart = lastId.substring(PATRON_PREFIX.length());
+                    
+                    // Convert to integer and increment
+                    nextSequence = Integer.parseInt(numberPart) + 1;
+                }
+            }
+        }
+        
+        // Format the new sequence number with zero-padding (0001, 0010, 0100, 1000)
+        DecimalFormat df = new DecimalFormat("0000"); // 4 sequential digits
+        String newSequence = df.format(nextSequence); 
+
+        // Return the new full ID
+        return PATRON_PREFIX + newSequence; // e.g., "PT-0009"
+    }
+    // --------------------------------------
     //  ---------- CRUD OPERATIONS ----------
+    // --------------------------------------
 
     //  ---------- CREATE ----------
-    public void createPatron(Patron patron) throws SQLException {
+    public Patron createPatron(Patron patron) throws SQLException {
     // SQL: use ? as placeholders for safe parameter injection
     String sql = "INSERT INTO patrons (PatronID, FirstName, LastName, Address, Email, PhoneNumber) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
     Connection link = null;
     PreparedStatement state = null;
+    ResultSet generatedKeys;
 
     try {
         link = DBConnector.getConnection();
@@ -33,6 +70,15 @@ public class PatronDAO {
         state.setString(5, patron.getEmail());
         state.setString(6, patron.getPhoneNumber());
         state.executeUpdate();
+
+        generatedKeys = state.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            // Assuming PatronID is the first generated key (index 1) and is a String
+            String generatedId = generatedKeys.getString(1);
+            // CRUCIAL: Set the actual ID back onto the Patron object
+            patron.setPatronID(generatedId); 
+        }
+        return patron;
         
     } catch (SQLException e) {
         System.err.println("Error creating patron: " + e.getMessage());
@@ -121,7 +167,6 @@ public class PatronDAO {
 
     //  ---------- DELETE ----------
     public void deletePatron(String patronId) throws SQLException {
-        // SQL: Simple DELETE statement using PatronID to target the record
         String sql = "DELETE FROM patrons WHERE PatronID = ?";
 
         Connection link = null;
@@ -130,20 +175,23 @@ public class PatronDAO {
             link = DBConnector.getConnection();
             state = link.prepareStatement(sql);
             
-            // 1. Map the ID to the WHERE clause
             state.setString(1, patronId);
-            // 2. Execute the delete
             int rowsAffected = state.executeUpdate();
             
             if (rowsAffected == 0) {
                 System.out.println("No patron found with ID: " + patronId);
             }
         } catch (SQLException e) {
-            // catch a FOREIGN KEY CONSTRAINT error
+            // Log the error for debugging purposes
+            System.err.println("Error deleting patron: " + e.getMessage());
+
+            // You can check for FK constraint errors here if needed:
             if (e.getSQLState().startsWith("23")) { 
                 System.err.println("Cannot delete patron. They have outstanding transactions.");
             }
-            throw e;
+            
+            // Always re-throw the exception so the Controller can handle the UI Alert
+            throw e; 
         } finally {
             if (state != null) state.close();
             if (link != null) link.close();
