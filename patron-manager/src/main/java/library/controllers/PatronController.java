@@ -11,27 +11,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory; // Assuming your DAO is in library.utilities
+import javafx.scene.control.cell.PropertyValueFactory;
 import library.models.Patron;
 import library.utilities.PatronDAO;
 
 public class PatronController {
-    
+
     // -------------------------------------------
-    // 1. FXML COMPONENT INJECTIONS (The VIEW)
+    // 1. FXML COMPONENT INJECTIONS
     // -------------------------------------------
-    // The fx:id from PatronManagerView.fxml must match these variable names
     @FXML private TableView<Patron> patronTable;
-    
-    // Columns (used for mapping data to the table)
     @FXML private TableColumn<Patron, String> patronIDColumn;
     @FXML private TableColumn<Patron, String> firstNameColumn;
     @FXML private TableColumn<Patron, String> lastNameColumn;
     @FXML private TableColumn<Patron, String> emailColumn;
     @FXML private TableColumn<Patron, String> phoneColumn;
     @FXML private TableColumn<Patron, String> addressColumn;
-
-    // Input Fields (used for Create/Update operations)
+    
+    @FXML private TextField patronIDField;
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
     @FXML private TextField emailField;
@@ -41,165 +38,159 @@ public class PatronController {
     @FXML private Button deletePatronButton;
 
     // -------------------------------------------
-    // 2. DATA LAYER INSTANCE (The MODEL)
+    // 2. DATA LAYER INSTANCE AND STATE
     // -------------------------------------------
-    private PatronDAO patronDAO = new PatronDAO();
-    private ObservableList<Patron> patronList; // Holds data for the TableView
-    private Patron selectedPatron; // Tracks the patron selected in the table for editing/deletion
-
+    private final PatronDAO patronDAO = new PatronDAO();
+    private ObservableList<Patron> patronList;
+    private Patron selectedPatron; 
 
     // -------------------------------------------
-    // 3. INITIALIZATION METHOD (Runs once on load)
+    // 3. INITIALIZATION METHOD
     // -------------------------------------------
     @FXML
     public void initialize() {
-        // --- Configure Table Columns ---
-        patronIDColumn.setCellValueFactory(new PropertyValueFactory<>("patronID")); 
+        // Configure Table Columns (All PropertyValueFactory names match the Patron model's getters)
+        patronIDColumn.setCellValueFactory(new PropertyValueFactory<>("patronID"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone")); // FIX: Using "phone"
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        
+        // Add Selection Listener for Details AND Button State
+        patronTable.getSelectionModel().selectedItemProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                showPatronDetails(newValue);
+                deletePatronButton.setDisable(newValue == null);
+            });
 
-        // --- Add Selection Listener for Details AND Button State ---
-    patronTable.getSelectionModel().selectedItemProperty().addListener(
-        (observable, oldValue, newValue) -> {
-            showPatronDetails(newValue);
-            
-            // FIX: Disable button if no row is selected
-            deletePatronButton.setDisable(newValue == null); 
-        });
-        deletePatronButton.setDisable(true);
+        // Set initial state
+        deletePatronButton.setDisable(true); 
+
         loadPatrons();
     }
-
+    
+    private void loadPatrons() {
+        try {
+            List<Patron> patrons = patronDAO.readAllPatrons();
+            patronList = FXCollections.observableArrayList(patrons);
+            patronTable.setItems(patronList);
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to load patrons.");
+            e.printStackTrace();
+        }
+    }
+    
     private void showPatronDetails(Patron patron) {
         if (patron != null) {
-            selectedPatron = patron; // Track the selected item
+            selectedPatron = patron;
+            patronIDField.setText(patron.getPatronID());
             firstNameField.setText(patron.getFirstName());
             lastNameField.setText(patron.getLastName());
             emailField.setText(patron.getEmail());
-            phoneField.setText(patron.getPhoneNumber());
+            phoneField.setText(patron.getPhone()); // FIX: Using getPhone()
             addressField.setText(patron.getAddress());
         } else {
-            handleClearFields(); // Clear fields if nothing is selected (or selection is cleared)
+            handleClearFields();
             selectedPatron = null;
         }
         savePatronButton.setText(selectedPatron != null ? "Update Patron" : "Save New Patron");
     }
-    
-    /**
-     * Calls the DAO to retrieve all patron records and populates the TableView.
-     */
-    private void loadPatrons() {
-        try {
-            // 1. Call the DAO method (Read operation)
-            List<Patron> patrons = patronDAO.readAllPatrons();
-            
-            // 2. Convert List to JavaFX ObservableList
-            patronList = FXCollections.observableArrayList(patrons);
-            
-            // 3. Set the data source for the TableView
-            patronTable.setItems(patronList);
-            
-        } catch (SQLException e) {
-            // In a real application, you would show a JavaFX Alert here
-            System.err.println("Error: Failed to load patrons from database.");
-            e.printStackTrace();
-        }
-    }
 
-    
     // -------------------------------------------
-    // 4. EVENT HANDLERS (CRUD & UI Actions)
+    // 4. EVENT HANDLERS (CRUD Actions)
     // -------------------------------------------
     
-    // --- CREATE Action (Linked to Save button onAction) ---
     @FXML
     private void handleSavePatron() {
-        // 1. Validate input (basic check)
+        // 1. Validation
         if (firstNameField.getText().trim().isEmpty() || lastNameField.getText().trim().isEmpty()) {
-            System.err.println("Validation Error: First Name and Last Name cannot be empty.");
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "First Name and Last Name cannot be empty.");
-            return; 
+            showAlert(Alert.AlertType.WARNING, "Validation Error", "First and Last Name cannot be empty.");
+            return;
         }
+        
+        // 2. Get Data
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
+        String phone = phoneField.getText();
+        String address = addressField.getText();
 
         try {
             if (selectedPatron != null) {
                 // --- A. UPDATE EXISTING PATRON ---
-                selectedPatron.setFirstName(firstNameField.getText());
-                selectedPatron.setLastName(lastNameField.getText());
-                selectedPatron.setEmail(emailField.getText());
-                selectedPatron.setPhoneNumber(phoneField.getText());
-                selectedPatron.setAddress(addressField.getText());
-
+                selectedPatron.setFirstName(firstName);
+                selectedPatron.setLastName(lastName);
+                selectedPatron.setEmail(email);
+                selectedPatron.setPhone(phone); // FIX: Using setPhone()
+                selectedPatron.setAddress(address);
+                
                 patronDAO.updatePatron(selectedPatron);
                 patronTable.refresh();
-                // Refresh TableView item (necessary for immediate UI update)
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Patron updated successfully.");
 
             } else {
-                // --- B. CREATE NEW PATRON ---
-                // Note: Assuming Patron constructor/setter handles auto-generated ID from DAO 
-                // OR you pass a placeholder ID and the DAO returns the generated ID.
-                // For simplicity, we assume the DAO method handles ID generation.
+                // --- B. CREATE NEW PATRON (selectedPatron is null) ---
                 Patron newPatron = new Patron(
-                    "", // Placeholder for ID if needed, otherwise rely on DAO to generate
-                    firstNameField.getText(),
-                    lastNameField.getText(),
-                    emailField.getText(),
-                    phoneField.getText(),
-                    addressField.getText()
+                    "", // ID placeholder
+                    firstName, 
+                    lastName, 
+                    email, 
+                    phone, // FIX: Matches constructor
+                    address
                 );
-
-                // Call DAO to save and get the Patron object back with its generated ID
-                Patron savedPatron = patronDAO.createPatron(newPatron); 
                 
-                // Add the new patron to the ObservableList to update the table UI
+                Patron savedPatron = patronDAO.createPatron(newPatron); 
                 patronList.add(savedPatron); 
+                showAlert(Alert.AlertType.INFORMATION, "Success", "New Patron created successfully.");
             }
+            
+            // FIX: Ensure clear is called for a guaranteed state reset after success
             handleClearFields(); 
-            // Clear fields after successful operation
+
         } catch (SQLException e) {
-            System.err.println("Error: Failed to save/update patron.");
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to save patron. Check logs.");
             e.printStackTrace();
         }
     }
 
-    // --- DELETE Action (Linked to Delete button onAction) ---
     @FXML
     private void handleDeletePatron() {
         Patron patronToDelete = patronTable.getSelectionModel().getSelectedItem();
 
         if (patronToDelete == null) {
-            // Validation check for selection (different from input field validation)
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a patron to delete.");
             return;
         }
         
-        // You could add a confirmation alert here (e.g., "Are you sure?")
-        
         try {
-            // 1. Call DAO to delete from the database
             patronDAO.deletePatron(patronToDelete.getPatronID());
-            
-            // 2. Remove from the ObservableList to update the table UI
             patronList.remove(patronToDelete);
-            
-            // 3. Clear fields
             handleClearFields();
-            
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Patron deleted successfully.");
         } catch (SQLException e) {
-            // Check for specific foreign key error and display a custom message
-            if (e.getSQLState().startsWith("23")) { 
-                showAlert(Alert.AlertType.ERROR, "Deletion Error", 
-                        "Cannot delete patron. They have outstanding transactions or linked data.");
+            if (e.getSQLState() != null && e.getSQLState().startsWith("23")) { 
+                showAlert(Alert.AlertType.ERROR, "Deletion Error", "Cannot delete patron. There are transactions linked to this patron.");
             } else {
-                showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to delete patron. Check logs for details.");
+                showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to delete patron. Check logs.");
             }
-            e.printStackTrace(); // Log the full error
+            e.printStackTrace();
         }
     }
-
+    
+    @FXML
+    private void handleClearFields() {
+        patronIDField.clear();
+        firstNameField.clear();
+        lastNameField.clear();
+        emailField.clear();
+        phoneField.clear();
+        addressField.clear();
+        
+        patronTable.getSelectionModel().clearSelection();
+        selectedPatron = null; 
+        savePatronButton.setText("Save New Patron"); 
+    }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
@@ -208,19 +199,4 @@ public class PatronController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    // --- CLEAR Fields Action (Linked to Clear button onAction) ---
-    @FXML
-    private void handleClearFields() {
-        firstNameField.clear();
-        lastNameField.clear();
-        emailField.clear();
-        phoneField.clear();
-        addressField.clear();
-        // Crucial: Deselect the table item and reset state
-        patronTable.getSelectionModel().clearSelection();
-        selectedPatron = null; 
-    }
-    
-    // Other handlers (handleEditSelection, handleDeleteSelection, etc.) go here...
 }

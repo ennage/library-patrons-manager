@@ -11,7 +11,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-font-family: Consolas;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.controllers.PatronController">
+<BorderPane style="-fx-font-family: Consolas;" 
+            xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="library.controllers.PatronController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
@@ -19,12 +22,12 @@
     <center>
         <TableView fx:id="patronTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="patronIDColumn" prefWidth="100.0" text="Patron ID" />
-                <TableColumn fx:id="firstNameColumn" prefWidth="100.0" text="First Name" />
-                <TableColumn fx:id="lastNameColumn" prefWidth="100.0" text="Last Name" />
-                <TableColumn fx:id="emailColumn" prefWidth="150.0" text="Email" />
-                <TableColumn fx:id="phoneColumn" prefWidth="100.0" text="Phone" />
-                <TableColumn fx:id="addressColumn" prefWidth="150.0" text="Address" />
+                <TableColumn fx:id="patronIDColumn" text="ID" prefWidth="60.0" maxWidth="-Infinity" minWidth="100.0" />
+                <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="120.0" />
+                <TableColumn fx:id="lastNameColumn" text="Last Name" prefWidth="120.0" />
+                <TableColumn fx:id="emailColumn" text="Email" prefWidth="180.0" />
+                <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="100.0" /> 
+                <TableColumn fx:id="addressColumn" text="Address" prefWidth="180.0" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -38,66 +41,61 @@
                 <Insets right="10" />
             </BorderPane.margin>
             
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="300.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="PATRONS" textAlignment="CENTER" />
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="303.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="PATRONS" textAlignment="CENTER" />
             
             <Separator prefWidth="200.0" />
             
-            <Label style="-fx-font-weight: bold;" text="Details:" />
+            <Label style="-fx-font-weight: bold;" text="Patron Details:" />
+
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Patron ID:" />
+                    <TextField fx:id="patronIDField" disable="true" prefHeight="30.0" prefWidth="210.0" promptText="ID assigned automatically" HBox.hgrow="ALWAYS" />
+                </children>
+            </HBox>
             
             <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
-                    <Label prefHeight="30.0" prefWidth="80.0" text="ID:" />
-                    <TextField fx:id="patronIDField" disable="true" prefHeight="30.0" prefWidth="220.0" promptText="ID assigned automatically" HBox.hgrow="ALWAYS" />
+                    <Label prefHeight="30.0" prefWidth="90.0" text="First Name:" />
+                    <TextField fx:id="firstNameField" prefHeight="30.0" prefWidth="210.0" promptText="Enter first name" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
 
             <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
-                    <Label prefHeight="30.0" prefWidth="80.0" text="Name(First):" />
-                    <TextField fx:id="firstNameField" prefHeight="30.0" prefWidth="220.0" promptText="Enter First Name" HBox.hgrow="ALWAYS" />
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Last Name:" />
+                    <TextField fx:id="lastNameField" prefHeight="30.0" prefWidth="210.0" promptText="Enter last name" HBox.hgrow="ALWAYS" />
+                </children>
+            </HBox>
+            
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Email:" />
+                    <TextField fx:id="emailField" prefHeight="30.0" prefWidth="210.0" promptText="Enter email" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
 
             <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
-                    <Label prefHeight="30.0" prefWidth="80.0" text="Name(Last):" />
-                    <TextField fx:id="lastNameField" prefHeight="30.0" prefWidth="220.0" promptText="Enter Last Name" HBox.hgrow="ALWAYS" />
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Phone:" />
+                    <TextField fx:id="phoneField" prefHeight="30.0" prefWidth="210.0" promptText="Enter phone number" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
-
+            
             <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
-                    <Label prefHeight="30.0" prefWidth="80.0" text="Email:" />
-                    <TextField fx:id="emailField" prefHeight="30.0" prefWidth="220.0" promptText="user@email.domain" HBox.hgrow="ALWAYS" />
-                </children>
-            </HBox>
-
-            <HBox prefHeight="30.0" prefWidth="300.0">
-                <children> 
-                    <Label prefHeight="30.0" prefWidth="80.0" text="Phone:" />
-                    <TextField fx:id="phoneField" prefHeight="30.0" prefWidth="220.0" promptText="Enter Phone Number (10 digits)" HBox.hgrow="ALWAYS" />
-                </children>
-            </HBox>
-
-            <HBox prefHeight="30.0" prefWidth="300.0">
-                <children> 
-                    <Label prefHeight="30.0" prefWidth="80.0" text="Address:" />
-                    <TextField fx:id="addressField" prefHeight="30.0" prefWidth="220.0" promptText="Enter Address" HBox.hgrow="ALWAYS" />
+                    <Label prefHeight="30.0" prefWidth="90.0" text="Address:" />
+                    <TextField fx:id="addressField" prefHeight="30.0" prefWidth="210.0" promptText="Enter address" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
             
             <HBox alignment="CENTER_LEFT" spacing="10.0">
-                <Button onAction="#handleSavePatron" prefWidth="150.0" text="Save" HBox.hgrow="ALWAYS" />
+                <Button fx:id="savePatronButton" onAction="#handleSavePatron" prefWidth="150.0" text="Save New Patron" HBox.hgrow="ALWAYS" />
                 <Button onAction="#handleClearFields" prefWidth="150.0" text="Clear Selection" HBox.hgrow="ALWAYS" />
             </HBox>
             
             <Separator prefHeight="20.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
-            <Button 
-                fx:id="deletePatronButton" 
-                onAction="#handleDeletePatron" 
-                style="-fx-background-color: #f44336; -fx-text-fill: white;" 
-                text="Delete Selected Patron" 
-                maxWidth="Infinity" />
+            <Button fx:id="deletePatronButton" maxWidth="Infinity" onAction="#handleDeletePatron" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Patron" />
             
         </VBox>
     </left>

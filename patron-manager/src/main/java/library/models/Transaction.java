@@ -1,7 +1,6 @@
 package library.models;
 
 public class Transaction {
-
     // Essentials for data access and JavaFX TableView
     // Fields correspond to the 'transactions' table columns
     private String transactionID;

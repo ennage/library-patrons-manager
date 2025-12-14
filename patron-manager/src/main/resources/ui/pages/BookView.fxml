@@ -12,11 +12,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-font-family: Consolas;"
+<BorderPane style="-fx-font-family: Consolas;" 
             xmlns="http://javafx.com/javafx/21" 
             xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="library.controllers.BookController">
-
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
@@ -24,12 +23,12 @@
     <center>
         <TableView fx:id="bookTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="bookIDColumn" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Book ID" />
-                <TableColumn fx:id="titleColumn" prefWidth="250.0" text="Title" />
-                <TableColumn fx:id="authorColumn" prefWidth="150.0" text="Author" />
-                <TableColumn fx:id="isbnColumn" prefWidth="100.0" text="ISBN" />
-                <TableColumn fx:id="publicationYearColumn" prefWidth="100.0" text="Year" />
-                <TableColumn fx:id="categoryNameColumn" prefWidth="110.0" text="Category" />
+                <TableColumn fx:id="bookIDColumn" text="Book ID" prefWidth="60.0" maxWidth="-Infinity" minWidth="100.0" />
+                <TableColumn fx:id="titleColumn" text="Title" prefWidth="200.0" />
+                <TableColumn fx:id="authorColumn" text="Author" prefWidth="150.0" />
+                <TableColumn fx:id="isbnColumn" text="ISBN" prefWidth="120.0" />
+                <TableColumn fx:id="publicationYearColumn" text="Year" prefWidth="70.0" /> 
+                <TableColumn fx:id="categoryNameColumn" text="Category" prefWidth="120.0" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -43,7 +42,7 @@
                 <Insets right="10" />
             </BorderPane.margin>
             
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="303.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="BOOKS" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="303.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="BOOKS" textAlignment="CENTER" />
             
             <Separator prefWidth="200.0" />
             
@@ -69,7 +68,7 @@
                     <TextField fx:id="isbnField" prefHeight="30.0" prefWidth="210.0" promptText="Enter ISBN" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
-            
+
             <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
                     <Label prefHeight="30.0" prefWidth="90.0" text="Year:" />
@@ -85,7 +84,7 @@
             </HBox>
             
             <HBox alignment="CENTER_LEFT" spacing="10.0">
-                <Button fx:id="saveBookButton" onAction="#handleSaveBook" prefWidth="150.0" text="Save / Update" HBox.hgrow="ALWAYS" />
+                <Button fx:id="saveBookButton" onAction="#handleSaveBook" prefWidth="150.0" text="Save New Book" HBox.hgrow="ALWAYS" />
                 <Button onAction="#handleClearFields" prefWidth="150.0" text="Clear Selection" HBox.hgrow="ALWAYS" />
             </HBox>
             

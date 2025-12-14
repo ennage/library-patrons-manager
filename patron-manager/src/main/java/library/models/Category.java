@@ -2,7 +2,7 @@ package library.models;
 
 public class Category {
     // Essentials for data access and JavaFX TableView
-    // Fields correspond to the columns in the 'books' table
+    // Fields correspond to the columns in the 'categories' table
     private String categoryID;
     private String categoryName;
 

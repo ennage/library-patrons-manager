@@ -10,9 +10,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-font-family: Consolas;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.controllers.TransactionController">
+<BorderPane style="-fx-font-family: Consolas;" 
+            xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="library.controllers.TransactionController">
 
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
@@ -24,11 +26,11 @@
                 <Label text="No outstanding loans found." />
             </placeholder>
             <columns>
-                <TableColumn fx:id="transactionIDColumn" prefWidth="100.0" text="Transaction ID" />
-                <TableColumn fx:id="patronNameColumn" prefWidth="150.0" text="Patron" />
-                <TableColumn fx:id="bookTitleColumn" prefWidth="250.0" text="Book Title" />
-                <TableColumn fx:id="borrowDateColumn" prefWidth="100.0" text="Borrowed" />
-                <TableColumn fx:id="dueDateColumn" prefWidth="100.0" text="Due Date" />
+                <TableColumn fx:id="transactionIDColumn" text="Trans ID" prefWidth="80.0" maxWidth="-Infinity" minWidth="80.0" />
+                <TableColumn fx:id="patronNameColumn" text="Patron" prefWidth="150.0" />
+                <TableColumn fx:id="bookTitleColumn" text="Book Title" prefWidth="250.0" />
+                <TableColumn fx:id="borrowDateColumn" text="Borrowed" prefWidth="100.0" />
+                <TableColumn fx:id="dueDateColumn" text="Due Date" prefWidth="100.0" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -42,43 +44,38 @@
                 <Insets right="10" />
             </BorderPane.margin>
             
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="303.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="TRANSACTIONS" textAlignment="CENTER">
-            <font>
-                <Font name="Consolas" size="12.0" />
-            </font></Label>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="303.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="TRANSACTIONS" textAlignment="CENTER" />
             
             <Separator prefWidth="200.0" />
             
-            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Record Loan/Borrow:" />
+            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Record New Loan" />
 
-            <HBox prefHeight="30.0" prefWidth="222.0">
+            <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
                     <Label prefHeight="30.0" prefWidth="90.0" text="Patron:" />
-                    <ComboBox fx:id="patronComboBox" prefHeight="30.0" prefWidth="210.0" promptText="Select Patron" />
+                    <ComboBox fx:id="patronComboBox" prefHeight="30.0" prefWidth="210.0" promptText="Choose Patron" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
 
-            <HBox prefHeight="30.0" prefWidth="222.0">
+            <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
                     <Label prefHeight="30.0" prefWidth="90.0" text="Book:" />
-                    <ComboBox fx:id="bookComboBox" prefHeight="30.0" prefWidth="210.0" promptText="Available Books" />
+                    <ComboBox fx:id="bookComboBox" prefHeight="30.0" prefWidth="210.0" promptText="Choose Available Book" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
             
-            <Button fx:id="borrowButton" maxWidth="Infinity" onAction="#handleBorrowBook" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Record" />
+            <Button fx:id="borrowButton" onAction="#handleBorrowBook" text="Record Loan (Borrow)" 
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;" 
+                    maxWidth="Infinity" />
             
             <Separator prefHeight="20.0" prefWidth="250.0" />
 
-            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Return Loan">
-            <font>
-                <Font name="Consolas" size="12.0" />
-            </font></Label>
-            <Label prefHeight="31.0" prefWidth="300.0" text="Select a transaction from the table to return." textAlignment="CENTER" wrapText="true" />
+            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Return Loan" />
+            <Label text="Select a transaction from the table to return." />
             
-            <Button fx:id="returnButton" disable="true" maxWidth="Infinity" onAction="#handleReturnBook" style="-fx-background-color: #F44336; -fx-text-fill: white;" text="Record Return">
-            <font>
-                <Font name="Consolas" size="12.0" />
-            </font></Button>
+            <Button fx:id="returnButton" onAction="#handleReturnBook" text="Record Return" 
+                    style="-fx-background-color: #F44336; -fx-text-fill: white;" 
+                    maxWidth="Infinity" disable="true" />
             
             <Separator VBox.vgrow="ALWAYS" />
 

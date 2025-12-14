@@ -11,33 +11,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-font-family: Consolas;"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="library.controllers.CategoryController"> 
-    
+<BorderPane style="-fx-font-family: Consolas;" 
+            xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="library.controllers.CategoryController">
     <padding>
-        <Insets bottom="10"
-            left="10"
-            right="10"
-            top="10" />
+        <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
 
     <center>
-        <TableView 
-            fx:id="categoryTable"
-            BorderPane.alignment="CENTER">
+        <TableView fx:id="categoryTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn
-                    fx:id="categoryIDColumn"
-                    maxWidth="-Infinity"
-                    minWidth="100.0"
-                    prefWidth="100.0"
-                    text="Category ID" />
-                <TableColumn 
-                    fx:id="nameColumn"
-                    prefWidth="150.0"
-                    text="Category Name" />
+                <TableColumn fx:id="categoryIDColumn" text="ID" prefWidth="60.0" maxWidth="-Infinity" minWidth="100.0" />
+                <TableColumn fx:id="categoryNameColumn" text="Category Name" prefWidth="300.0" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -46,88 +32,39 @@
     </center>
     
     <left>
-        <VBox 
-            alignment="TOP_LEFT"
-            prefWidth="300.0"
-            spacing="10.0"
-            BorderPane.alignment="CENTER">
-
+        <VBox alignment="TOP_LEFT" prefWidth="300.0" spacing="10.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets right="10" />
             </BorderPane.margin>
             
-            <Label
-            alignment="CENTER"
-            prefHeight="30.0"
-            prefWidth="303.0"
-            style="-fx-font-weight: bold; -fx-font-size: 18px;"
-            text="CATEGORIES"
-            textAlignment="CENTER"
-            VBox.vgrow="ALWAYS" />
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="303.0" style="-fx-font-weight: bold; -fx-font-size: 18px;" text="CATEGORIES" textAlignment="CENTER" />
             
             <Separator prefWidth="200.0" />
             
-            <Label
-                style="-fx-font-weight: bold;"
-                text="Details:" />
+            <Label style="-fx-font-weight: bold;" text="Category Details:" />
 
-            <HBox prefHeight="0.0" prefWidth="222.0">
+            <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
-                    <Label 
-                        prefHeight="30.0"
-                        prefWidth="50.0"
-                        text="ID:" />
-                    <TextField
-                        fx:id="categoryIDField"
-                        disable="true"
-                        prefHeight="30.0"
-                        prefWidth="250.0"
-                        promptText="ID will be assigned automatically" />
-                </children>
-            </HBox>
-            <HBox 
-                prefHeight="0.0"
-                prefWidth="222.0">
-                <children>
-                    <Label
-                        prefHeight="20.0"
-                        prefWidth="50.0"
-                        text="Name:" />
-                    <TextField
-                        fx:id="nameField"
-                        prefHeight="20.0"
-                        prefWidth="250.0"
-                        promptText="Category Name" />
+                    <Label prefHeight="30.0" prefWidth="120.0" text="Category ID:" />
+                    <TextField fx:id="categoryIDField" disable="true" prefHeight="30.0" prefWidth="180.0" promptText="ID assigned automatically" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
             
-            <HBox 
-                alignment="CENTER_LEFT"
-                spacing="10.0">
-                <Button 
-                    fx:id="saveCategoryButton"
-                    onAction="#handleSaveCategory"
-                    prefHeight="22.0"
-                    prefWidth="150.0"
-                    text="Update Category"
-                    HBox.hgrow="ALWAYS" />
-                <Button 
-                    onAction="#handleClearFields"
-                    prefWidth="150.0"
-                    text="Clear Selection"
-                    HBox.hgrow="ALWAYS" />
+            <HBox prefHeight="30.0" prefWidth="300.0">
+                <children> 
+                    <Label prefHeight="30.0" prefWidth="120.0" text="Category Name:" />
+                    <TextField fx:id="categoryNameField" prefHeight="30.0" prefWidth="180.0" promptText="Enter category name" HBox.hgrow="ALWAYS" />
+                </children>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                <Button fx:id="saveCategoryButton" onAction="#handleSaveCategory" prefWidth="150.0" text="Save New Category" HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleClearFields" prefWidth="150.0" text="Clear Selection" HBox.hgrow="ALWAYS" />
             </HBox>
             
-            <Separator
-                prefHeight="20.0"
-                prefWidth="250.0"
-                VBox.vgrow="ALWAYS" /> 
-            <Button
-                fx:id="deleteCategoryButton"
-                maxWidth="Infinity"
-                onAction="#handleDeleteCategory"
-                style="-fx-background-color: #f44336; -fx-text-fill: white;"
-                text="Delete Selected Category" />
+            <Separator prefHeight="20.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+            <Button fx:id="deleteCategoryButton" maxWidth="Infinity" onAction="#handleDeleteCategory" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Category" />
+            
         </VBox>
     </left>
 </BorderPane>

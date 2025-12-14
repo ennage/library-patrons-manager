@@ -16,9 +16,8 @@ import java.util.List;
 public class BookController {
 
     // -------------------------------------------
-    // 1. FXML COMPONENT INJECTIONS (The VIEW)
+    // 1. FXML COMPONENT INJECTIONS
     // -------------------------------------------
-    // fx:id must match the elements in your BookManagerView.fxml
     @FXML private TableView<Book> bookTable;
     @FXML private TableColumn<Book, String> bookIDColumn;
     @FXML private TableColumn<Book, String> titleColumn;
@@ -33,14 +32,13 @@ public class BookController {
     @FXML private TextField publicationYearField;
     @FXML private ComboBox<Category> categoryComboBox;
     @FXML private Button saveBookButton;
-    @FXML private Button deleteBookButton;
-    // Assuming you have Save, Update, and Delete buttons linked via onAction attributes
+    @FXML private Button deleteBookButton; // Used for disable/enable state
 
     // -------------------------------------------
     // 2. DATA LAYER INSTANCE AND STATE
     // -------------------------------------------
-    private BookDAO bookDAO = new BookDAO();
-    private CategoryDAO categoryDAO = new CategoryDAO();
+    private final BookDAO bookDAO = new BookDAO();
+    private final CategoryDAO categoryDAO = new CategoryDAO();
     private ObservableList<Book> bookList;
     private ObservableList<Category> categoryList;
     private Book selectedBook; 
@@ -50,32 +48,28 @@ public class BookController {
     // -------------------------------------------
     @FXML
     public void initialize() {
-        // --- Configure Table Columns (Property names match the Book model getters) ---
+        // Configure Table Columns
         bookIDColumn.setCellValueFactory(new PropertyValueFactory<>("bookID"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
-        publicationYearColumn.setCellValueFactory(new PropertyValueFactory<>("publicationYear")); // NEW
-        categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName")); // Requires getCategoryName() in Book model
+        isbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn")); // Assumes getIsbn()
+        publicationYearColumn.setCellValueFactory(new PropertyValueFactory<>("publicationYear"));
+        categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName")); 
 
-        // --- Add Selection Listener for Details AND Button State ---
+        // Add Selection Listener for Details AND Button State
         bookTable.getSelectionModel().selectedItemProperty().addListener(
             (observable, oldValue, newValue) -> {
                 showBookDetails(newValue);
-                
-                // FIX: Disable button if no row is selected
                 deleteBookButton.setDisable(newValue == null);
             });
 
-        // FIX: Set initial state (disable the button when the app starts)
+        // Set initial state
         deleteBookButton.setDisable(true); 
 
         loadCategories();
         loadBooks();
     }
     
-    /**
-     * Retrieves all categories and populates the ComboBox.
-     */
     private void loadCategories() {
         try {
             List<Category> categories = categoryDAO.readAllCategories();
@@ -100,10 +94,6 @@ public class BookController {
         }
     }
     
-    /**
-     * Retrieves all book records from the DAO and populates the TableView.
-     * NOTE: This assumes BookDAO.readAllBooks() performs a JOIN to fetch CategoryName.
-     */
     private void loadBooks() {
         try {
             List<Book> books = bookDAO.readAllBooks();
@@ -115,18 +105,15 @@ public class BookController {
         }
     }
     
-    /**
-     * Populates the input fields when a book is selected in the table.
-     */
     private void showBookDetails(Book book) {
         if (book != null) {
             selectedBook = book;
             titleField.setText(book.getTitle());
             authorField.setText(book.getAuthor());
-            isbnField.setText(book.getISBN());
-            publicationYearField.setText(String.valueOf(book.getPublicationYear())); // NEW
+            isbnField.setText(book.getIsbn());
+            publicationYearField.setText(String.valueOf(book.getPublicationYear()));
             
-            // Find and select the corresponding Category object in the ComboBox
+            // Select the Category object
             categoryComboBox.getSelectionModel().select(
                 categoryList.stream()
                             .filter(c -> c.getCategoryID().equals(book.getCategoryID()))
@@ -145,12 +132,9 @@ public class BookController {
     // 4. EVENT HANDLERS (CRUD Actions)
     // -------------------------------------------
     
-    /**
-     * Handles both CREATE and UPDATE actions (linked to a 'Save' button).
-     */
     @FXML
     private void handleSaveBook() {
-        // 1. Basic Validation
+        // 1. Validation
         if (titleField.getText().trim().isEmpty() || authorField.getText().trim().isEmpty() || categoryComboBox.getValue() == null) {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Title, Author, and Category cannot be empty.");
             return;
@@ -164,7 +148,7 @@ public class BookController {
         int pubYear;
         
         try {
-            pubYear = Integer.parseInt(publicationYearField.getText()); // Parse Publication Year
+            pubYear = Integer.parseInt(publicationYearField.getText());
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Input Error", "Publication Year must be a valid number.");
             return;
@@ -175,11 +159,9 @@ public class BookController {
                 // --- A. UPDATE EXISTING BOOK ---
                 selectedBook.setTitle(title);
                 selectedBook.setAuthor(author);
-                selectedBook.setISBN(isbn);
-                selectedBook.setPublicationYear(pubYear); // NEW
+                selectedBook.setIsbn(isbn);
+                selectedBook.setPublicationYear(pubYear);
                 selectedBook.setCategoryID(selectedCategory.getCategoryID());
-                
-                // Manually update the name for immediate UI refresh
                 selectedBook.setCategoryName(selectedCategory.getCategoryName());
                 
                 bookDAO.updateBook(selectedBook);
@@ -187,29 +169,28 @@ public class BookController {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Book updated successfully.");
 
             } else {
-                // --- B. CREATE NEW BOOK ---
+                // --- B. CREATE NEW BOOK (selectedBook is null) ---
                 Book newBook = new Book(
-                    "", // ID placeholder, DAO will generate
+                    "", // ID placeholder
                     title, 
                     author, 
                     isbn, 
-                    pubYear, // NEW
+                    pubYear,
                     selectedCategory.getCategoryID() 
                 );
                 
                 Book savedBook = bookDAO.createBook(newBook); 
-                
-                // CRITICAL FIX: Manually set the category name on the returned object 
-                // for the TableView display
+                // Set the display name for the UI refresh
                 savedBook.setCategoryName(selectedCategory.getCategoryName());
                 
                 bookList.add(savedBook); 
                 showAlert(Alert.AlertType.INFORMATION, "Success", "New Book created successfully.");
             }
+            
+            // FIX: Ensure clear is called for a guaranteed state reset after success
             handleClearFields(); 
 
         } catch (SQLException e) {
-            // Handle unique constraints (ISBN) or other DB errors
             if (e.getSQLState() != null && e.getSQLState().startsWith("23")) {
                 showAlert(Alert.AlertType.ERROR, "Database Error", "The ISBN is already in use.");
             } else {
@@ -219,13 +200,10 @@ public class BookController {
         }
     }
 
-    /**
-     * Deletes the currently selected book.
-     */
     @FXML
     private void handleDeleteBook() {
+        // ... (Deletion logic is assumed correct) ...
         Book bookToDelete = bookTable.getSelectionModel().getSelectedItem();
-
         if (bookToDelete == null) {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a book to delete.");
             return;
@@ -236,12 +214,9 @@ public class BookController {
             bookList.remove(bookToDelete);
             handleClearFields();
             showAlert(Alert.AlertType.INFORMATION, "Success", "Book deleted successfully.");
-
         } catch (SQLException e) {
-            // Check for Foreign Key Constraint violation (if the book is currently borrowed/in a transaction)
             if (e.getSQLState() != null && e.getSQLState().startsWith("23")) { 
-                showAlert(Alert.AlertType.ERROR, "Deletion Error", 
-                            "Cannot delete book. There are currently transactions linked to this book.");
+                showAlert(Alert.AlertType.ERROR, "Deletion Error", "Cannot delete book. It is referenced in a transaction record.");
             } else {
                 showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to delete book. Check logs.");
             }
@@ -249,9 +224,6 @@ public class BookController {
         }
     }
     
-    /**
-     * Clears all input fields and resets the controller state.
-     */
     @FXML
     private void handleClearFields() {
         titleField.clear();
@@ -262,11 +234,9 @@ public class BookController {
         
         bookTable.getSelectionModel().clearSelection();
         selectedBook = null; 
+        saveBookButton.setText("Save New Book"); // Explicitly reset button text
     }
 
-    /**
-     * Helper method to display a JavaFX Alert to the user.
-     */
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

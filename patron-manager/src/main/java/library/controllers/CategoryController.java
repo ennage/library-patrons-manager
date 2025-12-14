@@ -22,7 +22,10 @@ public class CategoryController {
     // -------------------------------------------
     @FXML private TableView<Category> categoryTable;
     @FXML private TableColumn<Category, String> categoryIDColumn;
-    @FXML private TableColumn<Category, String> nameColumn;
+    
+    // FIX HERE: Renamed 'nameColumn' to 'categoryNameColumn' to match FXML fx:id
+    @FXML private TableColumn<Category, String> categoryNameColumn; 
+    
     @FXML private TextField categoryIDField;
     @FXML private TextField nameField;
     @FXML private Button saveCategoryButton;
@@ -33,7 +36,7 @@ public class CategoryController {
     // -------------------------------------------
     private CategoryDAO categoryDAO = new CategoryDAO();
     private ObservableList<Category> categoryList;
-    private Category selectedCategory; // Tracks the category selected in the table
+    private Category selectedCategory; 
 
     // -------------------------------------------
     // 3. INITIALIZATION METHOD
@@ -41,20 +44,19 @@ public class CategoryController {
     @FXML
     public void initialize() {
         // --- Configure Table Columns ---
-        // Maps the column to the fields in the Category model (categoryId and categoryName)
         categoryIDColumn.setCellValueFactory(new PropertyValueFactory<>("categoryID"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
+        
+        // FIX HERE: Used the renamed variable 'categoryNameColumn'
+        categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
         
         // --- Add Listener for Table Selection ---
         categoryTable.getSelectionModel().selectedItemProperty().addListener(
             (observable, oldValue, newValue) -> {
                 showCategoryDetails(newValue);
-                
-                // FIX: Disable the Delete button if no row is selected
                 deleteCategoryButton.setDisable(newValue == null); 
             });
 
-        // FIX: Set initial state—Delete button must be disabled when the app first starts.
+        // Set initial state
         deleteCategoryButton.setDisable(true); 
 
         // --- Load Data on startup ---
@@ -83,16 +85,13 @@ public class CategoryController {
             selectedCategory = category;
             categoryIDField.setText(category.getCategoryID());
             nameField.setText(category.getCategoryName());
-            // Disable ID field during UPDATE mode to prevent key changes
             categoryIDField.setDisable(true); 
 
         } else {
             handleClearFields();
             selectedCategory = null;
-            // Enable ID field during CREATE mode
             categoryIDField.setDisable(false); 
         }
-        // Update the button text based on selection
         saveCategoryButton.setText(selectedCategory != null ? "Update Category" : "Save New Category");
     }
 
@@ -100,12 +99,9 @@ public class CategoryController {
     // 4. EVENT HANDLERS (CRUD Actions)
     // -------------------------------------------
     
-    /**
-     * Handles both CREATE (New Category) and UPDATE (Existing Category) actions.
-     */
     @FXML
     private void handleSaveCategory() {
-        String inputID = categoryIDField.getText().trim(); // New line to get ID
+        String inputID = categoryIDField.getText().trim(); 
         String inputName = nameField.getText().trim();
         
         if (inputName.isEmpty() || (selectedCategory == null && inputID.isEmpty())) {
@@ -116,7 +112,6 @@ public class CategoryController {
         try {
             if (selectedCategory != null) {
                 // --- A. UPDATE EXISTING CATEGORY ---
-                // ID is disabled, only Name is updated
                 selectedCategory.setCategoryName(inputName);
                 
                 categoryDAO.updateCategory(selectedCategory);
@@ -125,13 +120,10 @@ public class CategoryController {
 
             } else {
                 // --- B. CREATE NEW CATEGORY ---
-                // This now relies on the user-provided ID
-                Category newCategory = new Category(inputID, inputName); // Assuming your model allows this constructor
+                Category newCategory = new Category(inputID, inputName); 
 
-                // NOTE: Your DAO must now handle the user-provided ID and check for duplicates.
-                Category savedCategory = categoryDAO.createCategory(newCategory); // Assuming a new DAO method
+                Category savedCategory = categoryDAO.createCategory(newCategory);
                 
-                // Add the new category to the UI list
                 categoryList.add(savedCategory); 
                 showAlert(Alert.AlertType.INFORMATION, "Success", "New Category created successfully.");
             }
@@ -139,7 +131,6 @@ public class CategoryController {
 
         } catch (SQLException e) {
             String errorMsg = "Failed to save category. Check logs.";
-            // Check for Duplicate Entry error (ID or Name)
             if (e.getSQLState().startsWith("23")) {
                 errorMsg = "Database Error: The Category ID or Name is already in use.";
             }
@@ -162,12 +153,11 @@ public class CategoryController {
         
         try {
             categoryDAO.deleteCategory(categoryToDelete.getCategoryID());
-            categoryList.remove(categoryToDelete); // Remove from ObservableList
+            categoryList.remove(categoryToDelete);
             handleClearFields();
             showAlert(Alert.AlertType.INFORMATION, "Success", "Category deleted successfully.");
 
         } catch (SQLException e) {
-            // Handle Foreign Key Constraint violation (code 23)
             if (e.getSQLState().startsWith("23")) { 
                 showAlert(Alert.AlertType.ERROR, "Deletion Error", 
                             "Cannot delete category. Books are currently assigned to this category.");

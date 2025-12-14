@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.VBox?>
-
-<VBox prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="configuration.MainController">
-    
-    <TabPane prefHeight="634.0" prefWidth="1152.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS"> 
-        
-        <tabs>
-            <Tab text="Records: Book Categories">
-                <content>
-                    <fx:include source="pages/CategoryView.fxml" /> 
-                </content>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.fxml.FXMLLoader?> <BorderPane maxHeight="-Infinity" 
+            maxWidth="-Infinity" 
+            minHeight="-Infinity" 
+            minWidth="-Infinity" 
+            prefHeight="700.0" 
+            prefWidth="1000.0" 
+            xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="configuration.MainController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="1000.0" style="-fx-background-color: #3f51b5;" BorderPane.alignment="CENTER">
+         <children>
+            <Label style="-fx-font-size: 20; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 0 10 0 10;" text="Library Management System" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+         <tabs>
+             
+            <Tab text="Tags: Categories">
+               <content>
+                   <fx:include source="pages/CategoryView.fxml" />
+               </content>
             </Tab>
+            
             <Tab text="Records: Books">
-                <content>
-                    <fx:include source="pages/BookView.fxml" />
-                </content>
+               <content>
+                   <fx:include source="pages/BookView.fxml" />
+               </content>
             </Tab>
+            
             <Tab text="Records: Patrons">
-                <content>
-                    <fx:include source="pages/PatronView.fxml" /> 
-                </content>
+               <content>
+                   <fx:include source="pages/PatronView.fxml" />
+               </content>
             </Tab>
+            
             <Tab text="Transactions: Record &amp; Return">
-                <content>
-                    <fx:include source="pages/TransactionView.fxml" />
-                </content>
+               <content>
+                   <fx:include source="pages/TransactionView.fxml" />
+               </content>
             </Tab>
-        </tabs>
-    </TabPane>
-</VBox>
+            
+         </tabs>
+      </TabPane>
+   </center>
+</BorderPane>
