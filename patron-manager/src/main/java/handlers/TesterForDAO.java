@@ -16,6 +16,7 @@ public class TesterForDAO {
         System.out.println("--------------------------------------------------");
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public static void main(String[] args) {
         PatronDAO patronDAO = new PatronDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
