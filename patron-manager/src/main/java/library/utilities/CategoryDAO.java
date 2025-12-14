@@ -8,8 +8,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import configuration.DBConnector;
 import library.models.Category;
-import tools.DBConnector;
 
 public class CategoryDAO {
     // -------------------------------------------------

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane 
-    xmlns="http://javafx.com/javafx/21" 
-    xmlns:fx="http://javafx.com/fxml/1" 
-    fx:controller="handlers.PatronController">
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="handlers.PatronController">
 
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10" />
+        <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
 
     <center>
         <TableView fx:id="patronTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="IDColumn" prefWidth="75.0" text="Patron ID" />
+                <TableColumn fx:id="patronIDColumn" text="Patron ID" />
                 <TableColumn fx:id="firstNameColumn" prefWidth="120.0" text="First Name" />
                 <TableColumn fx:id="lastNameColumn" prefWidth="120.0" text="Last Name" />
-                <TableColumn fx:id="emailColumn" prefWidth="150.0" text="Email" />
                 <TableColumn fx:id="phoneColumn" prefWidth="100.0" text="Phone" />
+                <TableColumn fx:id="emailColumn" prefWidth="180.0" text="Email" />
                 <TableColumn fx:id="addressColumn" prefWidth="180.0" text="Address" />
             </columns>
             <columnResizePolicy>
@@ -28,11 +32,10 @@
             </columnResizePolicy>
         </TableView>
     </center>
-
-    <right>
-        <VBox alignment="TOP_LEFT" spacing="10.0" maxWidth="300">
+    <left>
+        <VBox alignment="TOP_LEFT" maxWidth="300" spacing="10.0" BorderPane.alignment="CENTER">
             <BorderPane.margin>
-                <Insets left="20" />
+                <Insets right="10" />
             </BorderPane.margin>
             
             <Label style="-fx-font-weight: bold;" text="Patron Details" />
@@ -55,13 +58,13 @@
             <Separator />
             
             <HBox alignment="CENTER" spacing="10.0">
-                <Button onAction="#handleSavePatron" text="Save / Update" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                <Button maxWidth="Infinity" onAction="#handleSavePatron" text="Save / Update" HBox.hgrow="ALWAYS" />
                 
-                <Button onAction="#handleClearFields" text="Clear Fields" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                <Button maxWidth="Infinity" onAction="#handleClearFields" text="Clear Fields" HBox.hgrow="ALWAYS" />
             </HBox>
             
-            <Button onAction="#handleDeletePatron" text="Delete Selected Patron" style="-fx-background-color: #f44336; -fx-text-fill: white;" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+            <Button maxWidth="Infinity" onAction="#handleDeletePatron" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Patron" HBox.hgrow="ALWAYS" />
             
         </VBox>
-    </right>
+    </left>
 </BorderPane>

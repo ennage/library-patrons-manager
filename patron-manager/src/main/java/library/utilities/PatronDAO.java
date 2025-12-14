@@ -8,8 +8,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import configuration.DBConnector;
 import library.models.Patron;
-import tools.DBConnector;
 
 public class PatronDAO {
     private static final String PATRON_PREFIX = "PT-";

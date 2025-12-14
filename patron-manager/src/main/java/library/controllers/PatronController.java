@@ -1,4 +1,4 @@
-package handlers;
+package library.controllers;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,7 +23,7 @@ public class PatronController {
     @FXML private TableView<Patron> patronTable;
     
     // Columns (used for mapping data to the table)
-    @FXML private TableColumn<Patron, String> IDColumn;
+    @FXML private TableColumn<Patron, String> patronIDColumn;
     @FXML private TableColumn<Patron, String> firstNameColumn;
     @FXML private TableColumn<Patron, String> lastNameColumn;
     @FXML private TableColumn<Patron, String> emailColumn;
@@ -52,7 +52,7 @@ public class PatronController {
     @FXML
     public void initialize() {
         // --- Configure Table Columns ---
-        IDColumn.setCellValueFactory(new PropertyValueFactory<>("patronID")); 
+        patronIDColumn.setCellValueFactory(new PropertyValueFactory<>("patronID")); 
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));

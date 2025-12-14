@@ -3,7 +3,7 @@ package application;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -11,12 +11,14 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/PatronsView.fxml"));
-            BorderPane root = loader.load();
+            //  load main layout
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/MainApplication.fxml"));
+            //  load tabs
+            VBox root = loader.load(); 
             
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Library Patron Manager");
+            primaryStage.setTitle("Library Management System"); 
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();

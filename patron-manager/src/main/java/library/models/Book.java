@@ -9,6 +9,7 @@ public class Book {
     private String isbn;
     private int publicationYear;
     private String categoryID;
+    private String categoryName;
 
     // Constructor
     // A convenient constructor to create a Patron object when reading from the database
@@ -39,9 +40,12 @@ public class Book {
     public int getPublicationYear() {
         return publicationYear;
     }
-    public String getCategoryId() {
+    public String getCategoryID() {
         return categoryID;
     }
+    public String getCategoryName() {
+            return categoryName;
+        }
 
     // ----------------------
     // --- Setters (Write) --
@@ -61,8 +65,11 @@ public class Book {
     public void setPublicationYear(int publicationYear) {
         this.publicationYear = publicationYear;
     }
-    public void setCategoryId(String categoryId) {
-        this.categoryID = categoryId;
+    public void setCategoryID(String categoryID) {
+        this.categoryID = categoryID;
+    }
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
 

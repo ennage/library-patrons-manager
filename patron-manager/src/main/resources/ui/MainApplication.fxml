@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?> 
+<?import javafx.scene.control.MenuBar?> 
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.fxml.FXMLLoader?> 
+
+<VBox 
+    xmlns="http://javafx.com/javafx/21" 
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="library.controllers.MainController" 
+    prefHeight="750.0" prefWidth="1200.0">
+    
+    <MenuBar>
+        <menus>
+            <Menu text="File">
+                <items>
+                    <MenuItem text="Exit" onAction="#handleExit" /> 
+                </items>
+            </Menu>
+            <Menu text="Help">
+                <items>
+                    <MenuItem text="About" />
+                </items>
+            </Menu>
+        </menus>
+    </MenuBar>
+    
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS"> 
+        
+        <tabs>
+            <Tab text="Categories">
+                <content>
+                    <fx:include source="pages/CategoryView.fxml" /> 
+                </content>
+            </Tab>
+            <Tab text="Library">
+                <content>
+                    <fx:include source="pages/BookView.fxml" />
+                </content>
+            </Tab>
+            <Tab text="Patrons">
+                <content>
+                    <fx:include source="pages/PatronView.fxml" /> 
+                </content>
+            </Tab>
+            <Tab text="Transactions">
+                <content>
+                    <fx:include source="pages/TransactionView.fxml" />
+                </content>
+            </Tab>
+        </tabs>
+    </TabPane>
+</VBox>

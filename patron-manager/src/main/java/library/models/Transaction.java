@@ -1,6 +1,7 @@
 package library.models;
 
 public class Transaction {
+
     // Essentials for data access and JavaFX TableView
     // Fields correspond to the 'transactions' table columns
     private String transactionID;
@@ -9,6 +10,9 @@ public class Transaction {
     private String dateBorrowed;
     private String dueDate;
     private String dateReturned;
+    // --- UI FIELDS ---
+    private String patronName;
+    private String bookTitle;
 
     // --- Constructor ---
     // A convenient constructor to create a Patron object when reading from the database
@@ -42,17 +46,25 @@ public class Transaction {
     public String getDateReturned() {
         return dateReturned;
     }
+    // --- UI Display ---
+    public String getPatronName() {
+        return patronName;
+    }
+    public String getBookTitle() {
+        return bookTitle;
+    }
+
 
     // ----------------------
     // --- Setters (Write) --
     // ----------------------
-    public void setTransactionId(String transactionID) {
+    public void setTransactionID(String transactionID) { // Corrected method name to match field case
         this.transactionID = transactionID;
     }
-    public void setBookId(String bookID) {
+    public void setBookID(String bookID) { // Corrected method name to match field case
         this.bookID = bookID;
     }
-    public void setPatronId(String patronID) {
+    public void setPatronID(String patronID) { // Corrected method name to match field case
         this.patronID = patronID;
     }
     public void setDateBorrowed(String dateBorrowed) {
@@ -63,5 +75,12 @@ public class Transaction {
     }
     public void setDateReturned(String dateReturned) {
         this.dateReturned = dateReturned;
+    }
+    // --- UI Display ---
+    public void setPatronName(String patronName) {
+        this.patronName = patronName;
+    }
+    public void setBookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
     }
 }
