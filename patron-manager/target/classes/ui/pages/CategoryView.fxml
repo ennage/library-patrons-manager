@@ -11,10 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-font-family: Consolas;" 
-            xmlns="http://javafx.com/javafx/21" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="library.controllers.CategoryController">
+<BorderPane style="-fx-font-family: Consolas;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.controllers.CategoryController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
@@ -22,8 +19,8 @@
     <center>
         <TableView fx:id="categoryTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="categoryIDColumn" text="ID" prefWidth="60.0" maxWidth="-Infinity" minWidth="100.0" />
-                <TableColumn fx:id="categoryNameColumn" text="Category Name" prefWidth="300.0" />
+                <TableColumn fx:id="categoryIDColumn" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" text="Category ID" />
+                <TableColumn fx:id="categoryNameColumn" prefWidth="300.0" text="Category Name" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -46,14 +43,14 @@
             <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
                     <Label prefHeight="30.0" prefWidth="120.0" text="Category ID:" />
-                    <TextField fx:id="categoryIDField" disable="true" prefHeight="30.0" prefWidth="180.0" promptText="ID assigned automatically" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="categoryIDField" disable="true" prefHeight="30.0" prefWidth="180.0" promptText="BKYN-99 &lt;- ID Format" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
             
             <HBox prefHeight="30.0" prefWidth="300.0">
                 <children> 
                     <Label prefHeight="30.0" prefWidth="120.0" text="Category Name:" />
-                    <TextField fx:id="categoryNameField" prefHeight="30.0" prefWidth="180.0" promptText="Enter category name" HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="categoryNameField" prefHeight="30.0" prefWidth="180.0" promptText="Enter Category Name" HBox.hgrow="ALWAYS" />
                 </children>
             </HBox>
 

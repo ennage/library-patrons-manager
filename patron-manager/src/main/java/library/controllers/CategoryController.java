@@ -28,7 +28,7 @@ public class CategoryController {
     @FXML private TableColumn<Category, String> categoryNameColumn; 
     
     @FXML private TextField categoryIDField;
-    @FXML private TextField nameField;
+    @FXML private TextField categoryNameField;
     @FXML private Button saveCategoryButton;
     @FXML private Button deleteCategoryButton;
 
@@ -59,6 +59,7 @@ public class CategoryController {
 
         // Set initial state
         deleteCategoryButton.setDisable(true); 
+        categoryIDField.setDisable(false);
 
         // --- Global Refresh Listener ---
         GlobalEventManager.getInstance().getRefreshSignal().addListener((obs, oldVal, newVal) -> {
@@ -88,7 +89,7 @@ public class CategoryController {
         if (category != null) {
             selectedCategory = category;
             categoryIDField.setText(category.getCategoryID());
-            nameField.setText(category.getCategoryName());
+            categoryNameField.setText(category.getCategoryName());
             categoryIDField.setDisable(true); 
 
         } else {
@@ -106,7 +107,7 @@ public class CategoryController {
     @FXML
     private void handleSaveCategory() {
         String inputID = categoryIDField.getText().trim(); 
-        String inputName = nameField.getText().trim();
+        String inputName = categoryNameField.getText().trim();
         
         if (inputName.isEmpty() || (selectedCategory == null && inputID.isEmpty())) {
             showAlert(Alert.AlertType.WARNING, "Validation Error", "Category Name and ID cannot be empty.");
@@ -178,7 +179,7 @@ public class CategoryController {
     @FXML
     private void handleClearFields() {
         categoryIDField.clear();
-        nameField.clear();
+        categoryNameField.clear();
         categoryTable.getSelectionModel().clearSelection();
         selectedCategory = null; 
         
