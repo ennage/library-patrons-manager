@@ -21,7 +21,7 @@
     </padding>
 
     <center>
-        <TableView fx:id="bookTable" BorderPane.alignment="CENTER">
+        <TableView fx:id="bookTable" id="primary-data-table" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="bookIDColumn" text="Book ID" prefWidth="60.0" maxWidth="-Infinity" minWidth="100.0" />
                 <TableColumn fx:id="titleColumn" text="Title" prefWidth="200.0" />
@@ -89,7 +89,7 @@
             </HBox>
             
             <Separator prefHeight="20.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
-            <Button fx:id="deleteBookButton" maxWidth="Infinity" onAction="#handleDeleteBook" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Book" />
+            <Button fx:id="deleteBookButton" styleClass="delete-button" maxWidth="Infinity" onAction="#handleDeleteBook" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Book" />
             
         </VBox>
     </left>

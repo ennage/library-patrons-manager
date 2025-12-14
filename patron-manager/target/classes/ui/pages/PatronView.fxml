@@ -11,23 +11,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-font-family: Consolas;" 
-            xmlns="http://javafx.com/javafx/21" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="library.controllers.PatronController">
+<BorderPane style="-fx-font-family: Consolas;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="library.controllers.PatronController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
 
     <center>
-        <TableView fx:id="patronTable" BorderPane.alignment="CENTER">
+        <TableView id="primary-data-table" fx:id="patronTable" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="patronIDColumn" text="ID" prefWidth="60.0" maxWidth="-Infinity" minWidth="100.0" />
-                <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="120.0" />
-                <TableColumn fx:id="lastNameColumn" text="Last Name" prefWidth="120.0" />
-                <TableColumn fx:id="emailColumn" text="Email" prefWidth="180.0" />
-                <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="100.0" /> 
-                <TableColumn fx:id="addressColumn" text="Address" prefWidth="180.0" />
+                <TableColumn fx:id="patronIDColumn" maxWidth="-Infinity" minWidth="100.0" prefWidth="60.0" text="Patron ID" />
+                <TableColumn fx:id="firstNameColumn" prefWidth="120.0" text="First Name" />
+                <TableColumn fx:id="lastNameColumn" prefWidth="120.0" text="Last Name" />
+                <TableColumn fx:id="emailColumn" prefWidth="180.0" text="Email" />
+                <TableColumn fx:id="phoneColumn" prefWidth="100.0" text="Phone" /> 
+                <TableColumn fx:id="addressColumn" prefWidth="180.0" text="Address" />
             </columns>
             <columnResizePolicy>
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -95,7 +92,7 @@
             </HBox>
             
             <Separator prefHeight="20.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
-            <Button fx:id="deletePatronButton" maxWidth="Infinity" onAction="#handleDeletePatron" style="-fx-background-color: #f44336; -fx-text-fill: white;" text="Delete Selected Patron" />
+            <Button fx:id="deletePatronButton" maxWidth="Infinity" onAction="#handleDeletePatron" style="-fx-background-color: #f44336; -fx-text-fill: white;" styleClass="delete-button" text="Delete Selected Patron" />
             
         </VBox>
     </left>

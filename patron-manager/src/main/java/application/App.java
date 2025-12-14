@@ -19,7 +19,11 @@ public class App extends Application {
             // FIX: The loaded root node must be cast to BorderPane
             BorderPane root = loader.load(); 
             
-            Scene scene = new Scene(root, 1000, 700); // Added preferred size for consistency
+            Scene scene = new Scene(root, 1000, 700);
+
+            String cssPath = getClass().getResource("/elements/style.css").toExternalForm();
+            scene.getStylesheets().add(cssPath);
+
             primaryStage.setScene(scene);
             primaryStage.setTitle("Library Management System"); 
             primaryStage.show();

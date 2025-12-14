@@ -1,0 +1,139 @@
+/* ========================================================================= */
+/* 1. ROOT & COLOR PALETTE DEFINITION */
+/* ========================================================================= */
+.root {
+    /* Base Font & Background */
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 13px;
+    -fx-background-color: #ECEFF1; /* Light gray base background */
+
+    /* Custom CSS Variables (Palette) */
+    -primary-color: #3f51b5;     /* Main Blue */
+    -primary-light: #757de8;
+    -secondary-color: #ffffff;   /* Cyan */
+    -delete-color: #D32F2F;      /* Dark Red */
+    -success-color: #75dc78;     /* Green */
+    -text-color: #212121;        /* Dark gray for general text */
+}
+
+/* ========================================================================= */
+/* 2. HEADER BAR & NAVIGATION (MainApplication.fxml styling) */
+/* ========================================================================= */
+
+/* Style for the top header bar (HBox in the BorderPane's top region) */
+.root > .border-pane > .top {
+    -fx-background-color: -primary-color;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.0, 0, 2);
+}
+
+/* Style for the title label */
+.root Label[text="Library Management System"] {
+    -fx-text-fill: white;
+}
+
+/* Style for the global refresh button */
+.root Button[onAction="handleGlobalRefresh"] {
+    -fx-background-color: white;
+    -fx-text-fill: -primary-color;
+    -fx-font-weight: bold;
+    -fx-border-radius: 4px;
+    -fx-cursor: hand;
+}
+.root Button[onAction="handleGlobalRefresh"]:hover {
+    -fx-background-color: -primary-light;
+    -fx-text-fill: white;
+}
+
+/* Tab Pane Styling */
+.tab-pane {
+    -fx-tab-min-width: 150px;
+    -fx-tab-max-width: 150px;
+    -fx-padding: 5px;
+}
+.tab:selected {
+    -fx-background-color: -primary-color;
+}
+.tab:selected .tab-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ========================================================================= */
+/* 3. BUTTONS (Standard & Action Buttons) */
+/* ========================================================================= */
+
+/* Style for the common 'delete-button' class (e.g., Delete Selected Category) */
+.delete-button {
+    -fx-background-color: -delete-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.delete-button:hover {
+    -fx-background-color: darken(-delete-color, 10%);
+}
+
+/* Standard button hover effect */
+.button:not(.delete-button) {
+    -fx-cursor: hand;
+    -fx-background-color: #F5F5F5;
+}
+.button:not(.delete-button):hover {
+    -fx-background-color: #E0E0E0;
+}
+
+
+/* ========================================================================= */
+/* 4. TABLES (TableView) */
+/* ========================================================================= */
+
+/* General Table appearance (using the unique ID you set) */
+#primary-data-table {
+    -fx-border-color: #CFD8DC;
+    -fx-border-width: 1px;
+    -fx-background-color: white;
+}
+
+/* Table Header Style */
+.table-view .column-header-background {
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 0 5px 0;
+}
+
+/* Zebra Striping for rows */
+.table-row-cell:odd {
+    -fx-background-color: #F5F5F5; /* Very light gray */
+}
+.table-row-cell:even {
+    -fx-background-color: white;
+}
+
+/* Selected row style */
+.table-row-cell:selected {
+    -fx-background-color: rgba(63, 81, 181, 0.5); /* Semi-transparent Primary Color */
+    -fx-text-fill: -text-color;
+}
+
+/* ========================================================================= */
+/* 5. INPUT FIELDS (TextField, ComboBox) */
+/* ========================================================================= */
+
+.text-field, .combo-box {
+    -fx-border-color: #B0BEC5; 
+    -fx-border-radius: 3px;
+    -fx-padding: 4px;
+}
+
+/* Highlight the field when focused/selected */
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: -primary-color;
+    -fx-border-width: 2px;
+}
+
+/* Style for disabled/read-only text fields */
+.text-field:disabled {
+    -fx-opacity: 0.8;
+    -fx-background-color: #CFD8DC; /* Darker gray background */
+}

@@ -21,7 +21,7 @@
     </padding>
 
     <center>
-        <TableView fx:id="transactionTable" BorderPane.alignment="CENTER">
+        <TableView fx:id="transactionTable" id="primary-data-table" BorderPane.alignment="CENTER">
             <placeholder>
                 <Label text="No outstanding loans found." />
             </placeholder>
@@ -74,7 +74,7 @@
             <Label text="Select a transaction from the table to return." />
             
             <Button fx:id="returnButton" onAction="#handleReturnBook" text="Record Return" 
-                    style="-fx-background-color: #F44336; -fx-text-fill: white;" 
+                    styleClass="delete-button" style="-fx-background-color: #00e9c2ff; -fx-text-fill: white;" 
                     maxWidth="Infinity" disable="true" />
             
             <Separator VBox.vgrow="ALWAYS" />
