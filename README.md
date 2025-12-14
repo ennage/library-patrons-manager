@@ -126,6 +126,6 @@ Initial hurdles involved **FXML synchronization**, where minor mismatches betwee
 
 | Description | Screenshot |
 | :--- | :--- |
-| **Main Window/Category View** (Showing general layout and tabs) | ![Screenshot of the Main Category Tab](src/main/resources/screenshots/1-view.png) |
-| **Book View** (Showing Book list, input form, and Category ComboBox) | ![Screenshot of the Book Management Tab](src/main/resources/screenshots/2-view.png) |
-| **Transaction View** (Showing Loan/Return functionality) | ![Screenshot of the Transaction Tracking Tab](src/main/resources/screenshots/3-view.png) |
+| **Main Window/Category View** (Showing general layout and tabs) | ![Screenshot of the Main Category Tab](patron-manager/src/main/resources/screenshots/1-view.png) |
+| **Book View** (Showing Book list, input form, and Category ComboBox) | ![Screenshot of the Book Management Tab](patron-manager/src/main/resources/screenshots/2-view.png) |
+| **Transaction View** (Showing Loan/Return functionality) | ![Screenshot of the Transaction Tracking Tab](patron-manager/src/main/resources/screenshots/3-view.png) |
